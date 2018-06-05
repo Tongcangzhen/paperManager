@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="edu.zucc.paperManageSys.Entity.LoginTicketEntity" table="login_ticket" schema="papermanagasystem">
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
+        </id>
+        <property name="userId">
+            <column name="user_id" sql-type="int(11)"/>
+        </property>
+        <property name="ticket">
+            <column name="ticket" sql-type="varchar(45)" length="45"/>
+        </property>
+        <property name="expired">
+            <column name="expired" sql-type="datetime"/>
+        </property>
+        <property name="status">
+            <column name="status" sql-type="int(11)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>
