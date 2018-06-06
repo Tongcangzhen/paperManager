@@ -19,14 +19,14 @@ public class PaperManageSysApplicationTests {
 	UserDao userDao;
 	@Test
 	public void contextLoads() {
-		Random random = new Random(10);
-		for (int i = 0; i < 5; i++) {
-			UserEntity userEntity = new UserEntity();
-			userEntity.setName("test2" + i);
-			userEntity.setPassword("pwd" + random.nextInt());
-			userEntity.setCreatTime(new Date().toString());
-			userDao.save(userEntity);
-		}
+//		Random random = new Random(10);
+//		for (int i = 0; i < 5; i++) {
+//			UserEntity userEntity = new UserEntity();
+//			userEntity.setName("test2" + i);
+//			userEntity.setPassword("pwd" + random.nextInt());
+//			userEntity.setCreatTime(new Date().toString());
+//			userDao.save(userEntity);
+//		}
 
 	}
 

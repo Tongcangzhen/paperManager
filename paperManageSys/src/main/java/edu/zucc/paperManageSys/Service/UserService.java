@@ -80,7 +80,7 @@ public class UserService {
         LoginTicketEntity loginTicketEntity = new LoginTicketEntity();
         loginTicketEntity.setUserId(userId);
         Date now = new Date();
-        now.setTime(3600 * 24 * 10 + now.getTime());
+        now.setTime(3600 * 24 * 100 + now.getTime());
         loginTicketEntity.setExpired(now);
         loginTicketEntity.setStatus(0);
         loginTicketEntity.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));

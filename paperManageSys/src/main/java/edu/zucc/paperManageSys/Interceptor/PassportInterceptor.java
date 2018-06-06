@@ -48,7 +48,7 @@ public class PassportInterceptor implements HandlerInterceptor {
             UserEntity userEntity = userDao.findById(loginTicketEntity.getId());
             hostHolder.setUsers(userEntity);
         }
-        return false;
+        return true;
     }
 
     @Override
