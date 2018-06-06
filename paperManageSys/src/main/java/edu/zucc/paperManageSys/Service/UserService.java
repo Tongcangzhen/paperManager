@@ -27,7 +27,7 @@ public class UserService {
     @Autowired
     private LoginTicketDao loginTicketDao;
 
-    public Map<String, String> register(String username, String password) {
+    public Map<String, String> register(String username, String password, boolean isadmin) {
         Map<String, String> map = new HashMap<String, String>();
         if (StringUtils.isEmpty(username)) {
             map.put("msg", "用户名不能为空");
@@ -47,6 +47,11 @@ public class UserService {
         userEntity.setSalt(UUID.randomUUID().toString().substring(0, 5));
         userEntity.setPassword(paperUtil.MD5(password+userEntity.getSalt()));
         userEntity.setCreatTime(new Date().toString());
+        if (isadmin) {
+            userEntity.setType(1);
+        } else {
+            userEntity.setType(0);
+        }
         userDao.save(userEntity);
         return map;
     }
@@ -80,12 +85,18 @@ public class UserService {
         LoginTicketEntity loginTicketEntity = new LoginTicketEntity();
         loginTicketEntity.setUserId(userId);
         Date now = new Date();
-        now.setTime(3600 * 24 * 100 + now.getTime());
+        now.setTime(3600 * 1000 *1 + now.getTime());
         loginTicketEntity.setExpired(now);
         loginTicketEntity.setStatus(0);
         loginTicketEntity.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
         loginTicketDao.save(loginTicketEntity);
         return loginTicketEntity.getTicket();
+    }
+
+    public void logout(String ticket) {
+        LoginTicketEntity loginTicketEntity = loginTicketDao.findByTicket(ticket);
+        loginTicketEntity.setStatus(1);
+        loginTicketDao.save(loginTicketEntity);
     }
 
 //    public UserEntity getUser(int id) {

@@ -1,6 +1,17 @@
 <!DOCTYPE html>
-<html>
-<a>
+<html xmlns:th="http://www.thymeleaf.org">
+<p>
     登录成功!
-</a>
+
+</p>
+<tr th:text="'username:'+${username}"></tr>
+<tr th:switch="${type}">
+    <p th:case="0">教师</p>
+    <p th:case="1">管理员</p>
+    <p th:case="null">未知</p>
+</tr>
+
+<form action="/logout" method="get">
+    <button name="logout" value="">退出</button>
+</form>
 </html>
