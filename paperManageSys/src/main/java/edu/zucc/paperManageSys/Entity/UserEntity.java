@@ -6,19 +6,48 @@ import java.util.Objects;
 @Entity
 @Table(name = "user", schema = "papermanagasystem", catalog = "")
 public class UserEntity {
-    private int id;
-    private String name;
-    private Boolean gender;
-    private String jobtitle;
-    private Integer type;
-    private String password;
-    private String email;
-    private String creatTime;
-    private String editTime;
-    private String salt;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    private int id;
+
+    @Basic
+    @Column(name = "name", nullable = true, length = 45)
+    private String name;
+
+    @Basic
+    @Column(name = "gender", nullable = true)
+    private Boolean gender;
+
+    @Basic
+    @Column(name = "jobtitle", nullable = true, length = 45)
+    private String jobtitle;
+
+    @Basic
+    @Column(name = "type", nullable = true)
+    private Integer type;
+
+    @Basic
+    @Column(name = "password", nullable = true, length = 45)
+    private String password;
+
+    @Basic
+    @Column(name = "email", nullable = true, length = 45)
+    private String email;
+
+    @Basic
+    @Column(name = "creat_time", nullable = true, length = 45)
+    private String creatTime;
+
+    @Basic
+    @Column(name = "edit_time", nullable = true, length = 45)
+    private String editTime;
+
+    @Basic
+    @Column(name = "salt", nullable = true, length = 45)
+    private String salt;
+
     public int getId() {
         return id;
     }
@@ -27,8 +56,6 @@ public class UserEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = true, length = 45)
     public String getName() {
         return name;
     }
@@ -37,8 +64,6 @@ public class UserEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "salt", nullable = true, length = 45)
     public String getSalt() {
         return salt;
     }
@@ -47,8 +72,6 @@ public class UserEntity {
         this.salt = name;
     }
 
-    @Basic
-    @Column(name = "gender", nullable = true)
     public Boolean getGender() {
         return gender;
     }
@@ -57,8 +80,6 @@ public class UserEntity {
         this.gender = gender;
     }
 
-    @Basic
-    @Column(name = "jobtitle", nullable = true, length = 45)
     public String getJobtitle() {
         return jobtitle;
     }
@@ -67,8 +88,6 @@ public class UserEntity {
         this.jobtitle = jobtitle;
     }
 
-    @Basic
-    @Column(name = "type", nullable = true)
     public Integer getType() {
         return type;
     }
@@ -77,8 +96,6 @@ public class UserEntity {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "password", nullable = true, length = 45)
     public String getPassword() {
         return password;
     }
@@ -87,8 +104,6 @@ public class UserEntity {
         this.password = password;
     }
 
-    @Basic
-    @Column(name = "email", nullable = true, length = 45)
     public String getEmail() {
         return email;
     }
@@ -97,8 +112,6 @@ public class UserEntity {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "creat_time", nullable = true, length = 45)
     public String getCreatTime() {
         return creatTime;
     }
@@ -107,8 +120,6 @@ public class UserEntity {
         this.creatTime = creatTime;
     }
 
-    @Basic
-    @Column(name = "edit_time", nullable = true, length = 45)
     public String getEditTime() {
         return editTime;
     }

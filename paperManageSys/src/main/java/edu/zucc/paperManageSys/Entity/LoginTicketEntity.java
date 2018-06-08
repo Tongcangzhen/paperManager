@@ -8,14 +8,27 @@ import java.util.Objects;
 @Entity
 @Table(name = "login_ticket", schema = "papermanagasystem", catalog = "")
 public class LoginTicketEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
+
+    @Basic
+    @Column(name = "user_id", nullable = false)
     private int userId;
+
+    @Basic
+    @Column(name = "ticket", nullable = false, length = 45)
     private String ticket;
+
+    @Basic
+    @Column(name = "expired", nullable = false)
     private Date expired;
+
+    @Basic
+    @Column(name = "status", nullable = true)
     private Integer status;
 
-    @Id
-    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -24,8 +37,6 @@ public class LoginTicketEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "user_id", nullable = false)
     public int getUserId() {
         return userId;
     }
@@ -34,8 +45,6 @@ public class LoginTicketEntity {
         this.userId = userId;
     }
 
-    @Basic
-    @Column(name = "ticket", nullable = false, length = 45)
     public String getTicket() {
         return ticket;
     }
@@ -44,8 +53,6 @@ public class LoginTicketEntity {
         this.ticket = ticket;
     }
 
-    @Basic
-    @Column(name = "expired", nullable = false)
     public Date getExpired() {
         return expired;
     }
@@ -54,8 +61,6 @@ public class LoginTicketEntity {
         this.expired = expired;
     }
 
-    @Basic
-    @Column(name = "status", nullable = true)
     public Integer getStatus() {
         return status;
     }

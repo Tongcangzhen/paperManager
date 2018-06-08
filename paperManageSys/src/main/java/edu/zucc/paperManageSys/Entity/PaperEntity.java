@@ -8,18 +8,42 @@ import java.util.Objects;
 @Entity
 @Table(name = "paper", schema = "papermanagasystem", catalog = "")
 public class PaperEntity {
-    private int idpaper;
-    private String papername;
-    private Integer papertype;
-    private Integer teacherId;
-    private Integer check;
-    private Integer adminId;
-    private Timestamp creatTime;
-    private Timestamp editTime;
-    private String paperUrl;
-
     @Id
     @Column(name = "idpaper", nullable = false)
+    private int idpaper;
+
+    @Basic
+    @Column(name = "papername", nullable = true, length = 45)
+    private String papername;
+
+    @Basic
+    @Column(name = "papertype", nullable = true)
+    private Integer papertype;
+
+    @Basic
+    @Column(name = "teacher_id", nullable = true)
+    private Integer teacherId;
+
+    @Basic
+    @Column(name = "check", nullable = true)
+    private Integer check;
+
+    @Basic
+    @Column(name = "admin_id", nullable = true)
+    private Integer adminId;
+
+    @Basic
+    @Column(name = "creat_time", nullable = true)
+    private Timestamp creatTime;
+
+    @Basic
+    @Column(name = "edit_time", nullable = true)
+    private Timestamp editTime;
+
+    @Basic
+    @Column(name = "paper_url", nullable = true, length = 255)
+    private String paperUrl;
+
     public int getIdpaper() {
         return idpaper;
     }
@@ -28,8 +52,6 @@ public class PaperEntity {
         this.idpaper = idpaper;
     }
 
-    @Basic
-    @Column(name = "papername", nullable = true, length = 45)
     public String getPapername() {
         return papername;
     }
@@ -38,8 +60,6 @@ public class PaperEntity {
         this.papername = papername;
     }
 
-    @Basic
-    @Column(name = "papertype", nullable = true)
     public Integer getPapertype() {
         return papertype;
     }
@@ -48,8 +68,6 @@ public class PaperEntity {
         this.papertype = papertype;
     }
 
-    @Basic
-    @Column(name = "teacher_id", nullable = true)
     public Integer getTeacherId() {
         return teacherId;
     }
@@ -58,8 +76,6 @@ public class PaperEntity {
         this.teacherId = teacherId;
     }
 
-    @Basic
-    @Column(name = "check", nullable = true)
     public Integer getCheck() {
         return check;
     }
@@ -68,8 +84,6 @@ public class PaperEntity {
         this.check = check;
     }
 
-    @Basic
-    @Column(name = "admin_id", nullable = true)
     public Integer getAdminId() {
         return adminId;
     }
@@ -78,8 +92,6 @@ public class PaperEntity {
         this.adminId = adminId;
     }
 
-    @Basic
-    @Column(name = "creat_time", nullable = true)
     public Timestamp getCreatTime() {
         return creatTime;
     }
@@ -88,8 +100,6 @@ public class PaperEntity {
         this.creatTime = creatTime;
     }
 
-    @Basic
-    @Column(name = "edit_time", nullable = true)
     public Timestamp getEditTime() {
         return editTime;
     }
@@ -98,8 +108,6 @@ public class PaperEntity {
         this.editTime = editTime;
     }
 
-    @Basic
-    @Column(name = "paper_url", nullable = true, length = 255)
     public String getPaperUrl() {
         return paperUrl;
     }
