@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script src="../jquery/jquery-1.11.0.js"></script>
+<script>
+function aa() {
+var name = $("#name").val();
+
+$("table").append("<tr><td><input type='checkbox' name='ck'></td><td>" + name + "</td><td><button onclick='ff(this)'>删除</button></td></tr>");
+}
+function ff(a){
+$(a).parent().parent().remove();
+}
+function ckall(e){
+var es= $(":input[name='ck']");
+for(var i=0;i<es.length;i++){
+es[i].checked=e.checked;
+}
+} 
+function quanxuan(){
+var ckss=$("input[name='ck']")
+for(var i in ckss) {
+if (ckss[i].checked==false) {
+ckss[i].checked=true;
+} else{
+ckss[i].checked=false;
+}
+}
+}
+function piliang(){
+var checks=$(":checked[name=ck]");
+if (checks.length==0) {
+alert("请至少选择一条删除！");
+return;
+}
+
+for(var i in checks){
+checks[i].parentNode.parentNode.remove();
+}
+}
+
+
+
+$(function() {
+var shengfen = [["海淀","大兴"],["邯郸", "廊坊"], ["安阳", "洛阳"]];
+$("#pro").change(function() {
+$("#cityx").siblings().remove();
+var sheng = $(this).val();//省份对应value
+for(var i = 0; i < shengfen[sheng].length; i++) {
+var $o = $("<option></option>");//创建option标签
+$o.html(shengfen[sheng][i]);
+$("#city").append($o);}});});
+
+</script>
+<style>
+*{
+padding: 0;
+margin: 0;
+}
+</style>
+</head>
+
+
+<body style="margin: 0 auto;">
+<div>　论文类型<input id="name">　<button onclick="aa()">添加</button><br/>    　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　    <button onclick="quanxuan()">全选/返选</button>　　<button onclick="piliang()">批量删除</button></div>
+<div>
+<table style="padding: 1px;width: 700px;margin-top: 5px;" border="1">
+<tr style="background-color: #919191;">
+<td><input type="checkbox" name="chee" onchange="ckall(this)"></td>
+<td>论文类型</td>
+<td>操作</td>
+</tr>
+</table>
+</div>
+</body>
+
+
+</html>
