@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。 -->  
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>浙江大学城市学院论文管理系统</title>
+	<link rel="stylesheet" href="../css/normalize.css">
+	<link rel="stylesheet" href="../css/common.css">
+	<link rel="stylesheet" href="../css/main.css">
+	<script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="../script/main.js"></script>
+	<style type="text/css">
+		.paper-box{background-size:50px 50px;height:50px;width:400px;
+		position:absolute;margin:auto;left:0;right:0;top:300px;bottom:0;
+		}
+		body{
+			position:relative;
+		}
+		.td_1{width:295px;overflow:hidden}
+		.td_2{width:100px;overflow:hidden}
+		.td_3{width:80px;overflow:hidden}
+/*		.td_4{width:80px;overflow:hidden}*/
+		.td_5{width:90px;overflow:hidden}
+	</style>
+
+</head>
+<body>
+	<!--[if lte IE8]>
+	<p class="browserupdate">您的浏览器版本太老，请到<a href="http://browsehappy.com">这里</a>更新，以获取最佳的浏览体验。</p>
+	<![endif]-->
+	<header>
+		<div class="logo">
+			<img src="../images/logo.png" alt="华中师范大学logo" class="logo-img vertical-center">
+			<h1 class="vertical-center">论文管理系统</h1>
+		</div>
+		<div class="logoff">
+			
+			<a href="login.html" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
+		</div>
+	</header><!-- header结束 -->
+	<div class="paper-box">
+		论文上传时间：<input type="date" value="1990-09-24"/>至<input type="date" value="2018-06-16"/><button>确定</button>
+			<div class="paper">
+				<table border=1>
+					<tr><td class="td_1">论文标题</td>  <td class="td_2">上传时间</td>  <td class="td_3">论文类型</td> <!--<td class="td_4">上传人</td>--><td class="td_5">审核状态</td>
+					<div class="teacher-paper-item"><tr><td>A</td><td>B</td><td>C</td><!--<td>d</td>--><td>e</td></div>
+				</table>
+			</div>
+	</div>
+	<script>    
+    $(function(){    
+        $.ajax({    
+            //请求方式    
+            type:"GET",    
+            //文件位置    
+            url:"data.json",  
+            //返回数据格式为json,也可以是其他格式如    
+            dataType: "json",    
+            //请求成功后要执行的函数，拼接html    
+            success: function(data){
+
+                var str="";    
+                $.each(data,function(i,n){
+                	str+="<tr>";
+                    str+="<td>"+n.标题+"</td>";  
+                    str+="<td>"+n.上传时间+"</td>";  
+                    str+="<td>"+n.论文类型+"</td>";
+                    str+="<td>"+n.审核状态+"</td>";                   
+                });        
+                $(".teacher-paper-item").append(str);    
+            }    
+        });    
+    });    
+</script> 
+</body>
+</html>

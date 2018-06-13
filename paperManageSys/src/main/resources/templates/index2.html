@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
-	  xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。 -->  
@@ -29,15 +28,17 @@
 			<h1 class="vertical-center">论文管理系统</h1>
 		</div>
 		<div class="logoff">
-			<a href="/logout" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
+			
+			<a href="login.html" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
 		</div>
 	</header><!-- header结束 -->
 	<div class="container">
 		<section class="person-info box">
 			<img src="../images/my.png" alt="用户图片" class="horizontal-center">
 			<div class="horizontal-center">
-				<span>您好，<em class="username" th:text="${username}"></em> !</span>
-				<span><h3>管理员主页</h3></span>
+				<span>姓名：<em class="username">蒲东齐</em></span>
+				<span>学号：<em class="usernum">2015210817</em></span>
+				<span><h3>管理员</h3></span>
 			</div>
 		</section>
 		<section class="paper-list">
@@ -48,8 +49,6 @@
 					<tr><td>A</td><td>B</td><td>C</td><td>d</td><td>e</td>
 				</table>
 			</div>
-			
-						
 		</section>
 		<!--<section class="seat-operate">
 			<div class="register box">
@@ -74,13 +73,13 @@
 			</br>
 			</br>
 			</br>
-				<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-					论文类型管理
-				</button>	
+				<a href="papertype.html">
+					<button>论文类别管理</button>
+				</a>	
 			</div>	
 			
 		</section>
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<!--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -102,7 +101,7 @@
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
-		</div>
+		</div>-->
 		<!--<section class="reserve-record box">
 			<img src="../images/record.png" alt="释放教室" class="vertical-center">
 			<span class="vertical-center">释放教室</span>
@@ -125,31 +124,6 @@
 	<script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
 	<script type="text/javascript" src="../script/main.js"></script>
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
-		<script>
-            $(function(){
-                $.ajax({
-                    //请求方式
-                    type:"GET",
-                    //文件位置
-                    url:"data.json",
-                    //返回数据格式为json,也可以是其他格式如
-                    dataType: "json",
-                    //请求成功后要执行的函数，拼接html
-                    success: function(data){
-
-                        var str="";
-                        $.each(data,function(i,n){
-                            str+="<tr>";
-                            str+="<td>"+n.标题+"</td>";
-                            str+="<td>"+n.上传时间+"</td>";
-                            str+="<td>"+n.论文类型+"</td>";
-                            str+="<td>"+n.上传人+"</td>";
-                            str+="<td>"+n.审核状态+"</td>";
-                        });
-                        $(".paper-item").append(str);
-                    }
-                });
-            });
-		</script>
+	
 </body>
 </html>
