@@ -3,6 +3,7 @@ package edu.zucc.paperManageSys.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.util.Map;
 

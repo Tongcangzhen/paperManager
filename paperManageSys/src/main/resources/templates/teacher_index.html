@@ -41,7 +41,7 @@
             xhr.addEventListener("load", uploadComplete, false);
             xhr.addEventListener("error", uploadFailed, false);
             xhr.addEventListener("abort", uploadCanceled, false);
-            xhr.open("POST", "UploadMinimal.aspx");
+            xhr.open("POST", "/teacher_up");
             xhr.send(fd);
         }
 
@@ -57,7 +57,9 @@
 
         function uploadComplete(evt) {
             /* This event is raised when the server send back a response */
-            alert(evt.target.responseText);
+            //self.location=evt.target.responseText;
+            alert("上传成功!");
+            location.reload();
         }
 
         function uploadFailed(evt) {
@@ -102,7 +104,7 @@
         </br>
         </br>
         <div style="text-align: center;">
-            <form id="form1" enctype="multipart/form-data" method="post" action="upload.php">
+            <form id="form1" enctype="multipart/form-data" method="post" action="/teacher_up">
                 <div class="row">
                     <!--<label for="fileToUpload">Select a File to Upload</label>-->
                     <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
