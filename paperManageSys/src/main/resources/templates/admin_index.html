@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。 -->  
@@ -28,17 +29,15 @@
 			<h1 class="vertical-center">论文管理系统</h1>
 		</div>
 		<div class="logoff">
-			
-			<a href="login.html" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
+			<a href="/logout" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
 		</div>
 	</header><!-- header结束 -->
 	<div class="container">
 		<section class="person-info box">
 			<img src="../images/my.png" alt="用户图片" class="horizontal-center">
 			<div class="horizontal-center">
-				<span>姓名：<em class="username">蒲东齐</em></span>
-				<span>学号：<em class="usernum">2015210817</em></span>
-				<span><h3>管理员</h3></span>
+				<span>您好，<em class="username" th:text="${username}"></em> !</span>
+				<span><h3>管理员主页</h3></span>
 			</div>
 		</section>
 		<section class="paper-list">

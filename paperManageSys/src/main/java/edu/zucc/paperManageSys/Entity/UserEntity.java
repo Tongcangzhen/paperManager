@@ -29,7 +29,7 @@ public class UserEntity {
     private String jobtitle;
 
     @Basic
-    @Column(name = "type", nullable = true)
+    @Column(name = "type", nullable = false)
     private Integer type;
 
     @Basic

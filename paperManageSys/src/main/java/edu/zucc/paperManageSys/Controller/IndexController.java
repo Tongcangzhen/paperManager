@@ -20,13 +20,19 @@ public class IndexController {
     public String index(Model model) {
         try {
             UserEntity user = hostHolder.getUser();
-            String name = user.getName();
-            model.addAttribute("username", name.equals("NULL") ? user.getUsername() : name );
-
-            int gender = user.getGender();
-            model.addAttribute("gender", gender==-1?"未知": gender==1?"男":"女");
-
-            return "/teacher_index";
+            if(user==null){
+                return "redirect:/reglogin";
+            }else if(user.getType()==1){
+                String name = user.getName();
+                model.addAttribute("username", name.equals("NULL") ? user.getUsername() : name );
+                return "/admin_index";
+            }else{
+                String name = user.getName();
+                model.addAttribute("username", name.equals("NULL") ? user.getUsername() : name );
+                int gender = user.getGender();
+                model.addAttribute("gender", gender==-1?"未知": gender==1?"男":"女");
+                return "/teacher_index";
+            }
         } catch (Exception e) {
             logger.error("index错误:" + e.getMessage());
             return "/index";

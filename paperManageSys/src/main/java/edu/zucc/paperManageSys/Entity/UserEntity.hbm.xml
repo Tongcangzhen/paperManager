@@ -21,7 +21,7 @@
             <column name="jobtitle" sql-type="varchar(45)" length="45" not-null="true"/>
         </property>
         <property name="type">
-            <column name="type" sql-type="int(11)" not-null="true"/>
+            <column name="type" sql-type="int(11)" not-null="false"/>
         </property>
         <property name="password">
             <column name="password" sql-type="varchar(45)" length="45" not-null="true"/>
