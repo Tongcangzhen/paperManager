@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>浙江大学城市学院论文管理系统</title>
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <style type="text/css">
+        /*body.shangchuan{
+             text-align:center;
+             font-family: "黑体";
+             font-size: 40px;
+             color: black;
+        }*/
+    </style>
+    <script type="text/javascript">
+        function fileSelected() {
+            var file = document.getElementById('fileToUpload').files[0];
+            if (file) {
+                var fileSize = 0;
+                if (file.size > 1024 * 1024)
+                    fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+                else
+                    fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+
+                document.getElementById('fileName').innerHTML = 'Name: ' + file.name;
+                document.getElementById('fileSize').innerHTML = 'Size: ' + fileSize;
+                document.getElementById('fileType').innerHTML = 'Type: ' + file.type;
+            }
+        }
+
+        function uploadFile() {
+            var fd = new FormData();
+            fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]);
+            var xhr = new XMLHttpRequest();
+            xhr.upload.addEventListener("progress", uploadProgress, false);
+            xhr.addEventListener("load", uploadComplete, false);
+            xhr.addEventListener("error", uploadFailed, false);
+            xhr.addEventListener("abort", uploadCanceled, false);
+            xhr.open("POST", "UploadMinimal.aspx");
+            xhr.send(fd);
+        }
+
+        function uploadProgress(evt) {
+            if (evt.lengthComputable) {
+                var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                document.getElementById('progressNumber').innerHTML = percentComplete.toString() + '%';
+            }
+            else {
+                document.getElementById('progressNumber').innerHTML = 'unable to compute';
+            }
+        }
+
+        function uploadComplete(evt) {
+            /* This event is raised when the server send back a response */
+            alert(evt.target.responseText);
+        }
+
+        function uploadFailed(evt) {
+            alert("There was an error attempting to upload the file.");
+        }
+
+        function uploadCanceled(evt) {
+            alert("The upload has been canceled by the user or the browser dropped the connection.");
+        }
+    </script>
+</head>
+<body>
+<!--[if lte IE8]>
+<p class="browserupdate">您的浏览器版本太老，请到<a href="http://browsehappy.com">这里</a>更新，以获取最佳的浏览体验。</p>
+<![endif]-->
+<header>
+    <div class="logo">
+        <img src="../images/logo.png" alt="华中师范大学logo" class="logo-img vertical-center">
+        <h1 class="vertical-center">论文管理系统</h1>
+    </div>
+    <div class="logoff">
+        <a href="/logout" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
+    </div>
+</header><!-- header结束 -->
+<div class="container">
+    <section class="person-info box">
+        <img src="../images/my.png" alt="用户图片" class="horizontal-center">
+        <div class="horizontal-center">
+            <span>姓名：<em class="username" th:text="${username}"></em></span>
+            <span>性别：<em class="usernum" th:text="${gender}"></em></span>
+            </br>
+            <span><a href="/teacher_info">修改个人资料</a></span>
+        </div>
+    </section>
+    <section class="seat-select box">
+        </br>
+        </br>
+        </br>
+        <div style="width:100%;text-align:center;font-size: 30px;color: #222222;">上传论文</div>
+        </br>
+        </br>
+        </br>
+        </br>
+        <div style="text-align: center;">
+            <form id="form1" enctype="multipart/form-data" method="post" action="upload.php">
+                <div class="row">
+                    <!--<label for="fileToUpload">Select a File to Upload</label>-->
+                    <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
+                </div>
+                <div id="fileName"></div>
+                <div id="fileSize"></div>
+                <div id="fileType"></div>
+                <!--<div class="row">
+
+                </div>-->
+                <div class="row">
+                    <input type="button" onclick="uploadFile()" value="Upload" />
+                </div>
+                <div id="progressNumber"></div>
+            </form>
+        </div>
+
+    </section>
+    <!--<section class="seat-operate">
+        <div class="register box">
+            <img src="../images/write.png" alt="联系管理员" class="vertical-center">
+            <span class="vertical-center">联系管理员</span>
+            <a href="room_register.html"></a>
+        </div>
+        <div class="cancel-reserve box">
+            <img src="../images/delete.png" alt="取消预约" class="vertical-center">
+            <span class="vertical-center">取消预约</span>
+            <a href="cancel_reserve.html"></a>
+        </div>
+    </section>-->
+
+    <section class="seat-release box">
+        <div style="text-align:center">
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
+            <a href="paper.html"><h3>查看已上传论文</h3></a>
+        </div>
+
+    </section>
+
+    <!--<section class="reserve-record box">
+        <img src="../images/record.png" alt="释放教室" class="vertical-center">
+        <span class="vertical-center">释放教室</span>
+        <a href="reserve_record.html"></a>
+    </section>
+    <section class="notice-board box">
+        <img src="../images/warning.png" alt="公告栏" class="vertical-center">
+        <div class="notice-info vertical-center">
+            <h3>公告</h3>
+            <p>实验室2017.1.1暂停开放通知</p>
+        </div>
+        <a href="notice.html"></a>
+    </section>
+    <section class="default-record box">
+        <img src="../images/wrong.png" alt="超时使用记录" class="vertical-center">
+        <span class="vertical-center">超时记录</span>
+        <a href="default_record.html"></a>
+    </section>-->
+</div><!-- container结束 -->
+<script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../script/main.js"></script>
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<p>-->
+    <!--登录成功!-->
+
+<!--</p>-->
+<!--<tr th:text="'username:'+${username}"></tr>-->
+<!--<tr th:switch="${type}">-->
+    <!--<p th:case="0">教师</p>-->
+    <!--<p th:case="1">管理员</p>-->
+    <!--<p th:case="null">未知</p>-->
+<!--</tr>-->
+
+<!--<form action="/logout" method="get">-->
+    <!--<button name="logout" value="">退出</button>-->
+<!--</form>-->
+<!--</html>-->

@@ -32,8 +32,6 @@ public class LoginController {
                       @RequestParam(value = "isAdmin", defaultValue = "false") boolean isAdmin) {
 
         try {
-
-
             Map<String, String> map = userService.register(username, password, isAdmin);
             if (map.containsKey("msg")) {
                 model.addAttribute("msg", map.get("msg"));

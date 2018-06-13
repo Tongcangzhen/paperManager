@@ -1,6 +1,5 @@
 package edu.zucc.paperManageSys.Entity;
 
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -9,15 +8,16 @@ import java.util.Objects;
 @Table(name = "paper", schema = "papermanagasystem", catalog = "")
 public class PaperEntity {
     @Id
-    @Column(name = "idpaper", nullable = false)
-    private int idpaper;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private int id;
 
     @Basic
     @Column(name = "papername", nullable = true, length = 45)
     private String papername;
 
     @Basic
-    @Column(name = "papertype", nullable = true)
+    @Column(name = "papertype", nullable = false)
     private Integer papertype;
 
     @Basic
@@ -44,12 +44,12 @@ public class PaperEntity {
     @Column(name = "paper_url", nullable = true, length = 255)
     private String paperUrl;
 
-    public int getIdpaper() {
-        return idpaper;
+    public int getId() {
+        return id;
     }
 
-    public void setIdpaper(int idpaper) {
-        this.idpaper = idpaper;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPapername() {
@@ -121,7 +121,7 @@ public class PaperEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PaperEntity that = (PaperEntity) o;
-        return idpaper == that.idpaper &&
+        return id == that.id &&
                 Objects.equals(papername, that.papername) &&
                 Objects.equals(papertype, that.papertype) &&
                 Objects.equals(teacherId, that.teacherId) &&
@@ -134,7 +134,6 @@ public class PaperEntity {
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(idpaper, papername, papertype, teacherId, check, adminId, creatTime, editTime, paperUrl);
+        return Objects.hash(id, papername, papertype, teacherId, check, adminId, creatTime, editTime, paperUrl);
     }
 }

@@ -13,12 +13,16 @@ public class UserEntity {
     private int id;
 
     @Basic
+    @Column(name = "username", nullable = true, length = 45)
+    private String username;
+
+    @Basic
     @Column(name = "name", nullable = true, length = 45)
     private String name;
 
     @Basic
-    @Column(name = "gender", nullable = true)
-    private Boolean gender;
+    @Column(name = "gender", nullable = false)
+    private Integer gender;
 
     @Basic
     @Column(name = "jobtitle", nullable = true, length = 45)
@@ -56,8 +60,16 @@ public class UserEntity {
         this.id = id;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getName() {
-        return name;
+        return name==null?"NULL":name;
     }
 
     public void setName(String name) {
@@ -72,12 +84,15 @@ public class UserEntity {
         this.salt = name;
     }
 
-    public Boolean getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
-        this.gender = gender;
+    public void setGender(int gender) {
+        if(gender==1 || gender==0)
+            this.gender = gender;
+        else
+            this.gender = -1;
     }
 
     public String getJobtitle() {
@@ -134,6 +149,7 @@ public class UserEntity {
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
         return id == that.id &&
+                Objects.equals(username, that.username) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(gender, that.gender) &&
                 Objects.equals(jobtitle, that.jobtitle) &&
@@ -148,6 +164,6 @@ public class UserEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name, gender, jobtitle, type, password, email, creatTime, editTime,salt);
+        return Objects.hash(id, username, name, gender, jobtitle, type, password, email, creatTime, editTime,salt);
     }
 }

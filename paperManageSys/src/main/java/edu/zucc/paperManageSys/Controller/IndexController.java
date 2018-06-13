@@ -2,6 +2,8 @@ package edu.zucc.paperManageSys.Controller;
 
 import edu.zucc.paperManageSys.Entity.UserEntity;
 import edu.zucc.paperManageSys.util.HostHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,19 +12,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class IndexController {
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     HostHolder hostHolder;
 
     @RequestMapping(path = {"/","/index"}, method = {RequestMethod.GET})
     public String index(Model model) {
-        if (hostHolder.getUser() != null) {
+        try {
             UserEntity user = hostHolder.getUser();
-            model.addAttribute("username", user.getName());
-            model.addAttribute("type", user.getType());
-        }else {
-            model.addAttribute("username", "未登录");
-        }
+            String name = user.getName();
+            model.addAttribute("username", name.equals("NULL") ? user.getUsername() : name );
 
-        return "/index";
+            int gender = user.getGender();
+            model.addAttribute("gender", gender==-1?"未知": gender==1?"男":"女");
+
+            return "/teacher_index";
+        } catch (Exception e) {
+            logger.error("index错误:" + e.getMessage());
+            return "/index";
+        }
     }
 }

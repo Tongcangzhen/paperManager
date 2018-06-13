@@ -83,7 +83,6 @@ public class LoginTicketEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, userId, ticket, expired, status);
     }
 }

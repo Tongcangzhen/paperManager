@@ -97,10 +97,19 @@
   	display: block;
   	margin-bottom:5px;
   }
+  
+/*  论文列表*/
+ .paper-list{
+ 	 
+   	 width: 620px;
+   	 background: whitesmoke;
+   	 top:0;
+   	 left:324px;
+   }
 
    /**座位预约seat-select样式**/
    .seat-select{
-   	 width: 200px;
+   	 width: 520px;
    	 background: rgba(224,98,169,1);
    	 top:0;
    	 left:324px;

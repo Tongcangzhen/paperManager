@@ -43,7 +43,8 @@ public class UserService {
             return map;
         }
         userEntity = new UserEntity();
-        userEntity.setName(username);
+        userEntity.setUsername(username);
+        userEntity.setGender(-1);
         userEntity.setSalt(UUID.randomUUID().toString().substring(0, 5));
         userEntity.setPassword(paperUtil.MD5(password+userEntity.getSalt()));
         userEntity.setCreatTime(new Date().toString());
@@ -66,7 +67,7 @@ public class UserService {
             map.put("msg", "密码不能为空");
             return map;
         }
-        UserEntity userEntity = userDao.findByName(username);
+        UserEntity userEntity = userDao.findByUsername(username);
         if (userEntity == null) {
             map.put("msg", "用户不存在");
             return map;

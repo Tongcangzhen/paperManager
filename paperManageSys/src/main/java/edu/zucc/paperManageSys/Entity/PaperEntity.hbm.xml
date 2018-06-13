@@ -5,8 +5,8 @@
 <hibernate-mapping>
 
     <class name="edu.zucc.paperManageSys.Entity.PaperEntity" table="paper" schema="papermanagasystem">
-        <id name="idpaper">
-            <column name="idpaper" sql-type="int(11)"/>
+        <id name="id">
+            <column name="id" sql-type="int(11)"/>
         </id>
         <property name="papername">
             <column name="papername" sql-type="varchar(45)" length="45" not-null="true"/>
