@@ -13,4 +13,7 @@ public interface PaperDao extends CrudRepository<PaperEntity, String> {
 
     @Query(value = "SELECT * FROM paper WHERE create_time > ?1 AND create_time < ?2 AND teacher_id = ?3", nativeQuery = true)
     List<PaperEntity> findByIdAndTime(Date formerTime, Date laterTime, int teacherId);
+
+    @Query(value = "SELECT * FROM paper WHERE create_time > ?1 AND create_time < ?2", nativeQuery = true)
+    List<PaperEntity> findByTime(Date formerTime, Date laterTime);
 }

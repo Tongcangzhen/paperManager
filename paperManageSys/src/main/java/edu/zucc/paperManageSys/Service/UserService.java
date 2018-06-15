@@ -100,7 +100,4 @@ public class UserService {
         loginTicketDao.save(loginTicketEntity);
     }
 
-//    public UserEntity getUser(int id) {
-//
-//    }
 }

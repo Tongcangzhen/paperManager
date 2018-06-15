@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface PaperTypeDao extends JpaRepository<PaperTypeEntity, Integer>{
     List<PaperTypeEntity> findAll();
+    PaperTypeEntity findById(int id);
 }

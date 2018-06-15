@@ -39,7 +39,7 @@
 		</div>
 	</header><!-- header结束 -->
 	<div class="paper-box">
-		论文上传时间：<input id="timeformer" type="date" value="1990-09-24"/>至<input id="timelater" type="date" value="2018-06-16"/><button onclick="update()">确定</button>
+		论文上传时间：<input id="timeformer" type="date" value="1990-09-24"/>至<input id="timelater" type="date" value="2020-06-16"/><button onclick="update()">确定</button>
 			<div class="paper" id="paperList">
 				<table border=1 class="teacher-paper-item">
 					<tr>
@@ -59,6 +59,7 @@
 
     function update(){
     	var data = {};
+    	data['isAdmin'] = 0;
     	data['timeFormer'] = $("input#timeformer").val();
     	data['timeLater'] = $("input#timelater").val();
         $.ajax({
@@ -85,8 +86,8 @@
                 	str+="<tr>";
                     str+="<td>"+n.paperName+"</td>";
                     str+="<td>"+n.createTime+"</td>";
-                    str+="<td>"+n.paperType+"</td>";
-                    str+="<td>"+n.teacher_id+"</td>";
+                    str+="<td>"+n.typeName+"</td>";
+                    str+="<td>"+n.teacherName+"</td>";
                     str+="<td>"+n.checked+"</td>";
                     str+="</tr>";
                 });

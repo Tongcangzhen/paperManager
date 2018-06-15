@@ -2,8 +2,11 @@ package edu.zucc.paperManageSys.Service;
 
 import edu.zucc.paperManageSys.Dao.PaperDao;
 import edu.zucc.paperManageSys.Dao.PaperTypeDao;
+import edu.zucc.paperManageSys.Dao.UserDao;
+import edu.zucc.paperManageSys.Entity.ComplexPaper;
 import edu.zucc.paperManageSys.Entity.PaperEntity;
 import edu.zucc.paperManageSys.Entity.PaperTypeEntity;
+import edu.zucc.paperManageSys.Entity.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +23,13 @@ public class PaperService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
+    private PaperTypeDao paperTypeDao;
+
+    @Autowired
     private PaperDao paperDao;
 
     @Autowired
-    private PaperTypeDao paperTypeDao;
+    private UserDao userDao;
 
     public boolean paperupload(String papername, String filename, int type, int teacherId) {
         try{
@@ -54,24 +60,66 @@ public class PaperService {
         return true;
     }
 
-    public List<PaperEntity> paperQueryAll(int teacherId) {
+    private List<ComplexPaper> mergePaperInfo(List<PaperEntity> paperlist){
+        if(paperlist==null) return null;
+        List<ComplexPaper> result = new ArrayList<>();
+        try{
+            for (PaperEntity paperEntity:paperlist) {
+                logger.info(paperEntity.toString());
+
+                int teacherId = paperEntity.getTeacherId();
+                UserEntity teacherEntity = userDao.findById(teacherId);
+                String teacherName = teacherEntity.getName().equals("NULL")?teacherEntity.getUsername():teacherEntity.getName();
+                int typeId = paperEntity.getPaperType();
+                String typeName = typeId==0?"未选择":paperTypeDao.findById(typeId).getTypeName();
+                String checked = paperEntity.getChecked()==0?"否":"是";
+                ComplexPaper paper = new ComplexPaper(
+                        paperEntity.getId(),
+                        paperEntity.getPaperName(),
+                        typeId,
+                        typeName,
+                        teacherId,
+                        teacherName,
+                        checked,
+                        paperEntity.getCreateTime().toString(),
+                        paperEntity.getPaperUrl()
+                );
+                result.add(paper);
+            }
+        }catch (Exception e){
+            logger.error("paperQueryByIdAndTime:"+e.getMessage());
+        }
+        return result;
+    }
+
+    public List<ComplexPaper> paperQueryAll(int teacherId) {
         List<PaperEntity> paperlist = null;
         try{
             paperlist = paperDao.findByTeacherId(teacherId);
         }catch (Exception e){
             logger.error("paperQueryAll:"+e.getMessage());
         }
-        return paperlist;
+        return mergePaperInfo(paperlist);
     }
 
-    public List<PaperEntity> paperQueryByIdAndTime(Date formerTime, Date laterTime, int teacherId) {
+    public List<ComplexPaper> paperQueryByIdAndTime(Date formerTime, Date laterTime, int teacherId) {
         List<PaperEntity> paperlist = null;
         try{
             paperlist = paperDao.findByIdAndTime(formerTime, laterTime, teacherId);
         }catch (Exception e){
             logger.error("paperQueryByIdAndTime:"+e.getMessage());
         }
-        return paperlist;
+        return mergePaperInfo(paperlist);
+    }
+
+    public List<ComplexPaper> paperQueryByTime(Date formerTime, Date laterTime) {
+        List<PaperEntity> paperlist = null;
+        try{
+            paperlist = paperDao.findByTime(formerTime, laterTime);
+        }catch (Exception e){
+            logger.error("paperQueryByIdAndTime:"+e.getMessage());
+        }
+        return mergePaperInfo(paperlist);
     }
 
     public boolean typeAdd(String name) {

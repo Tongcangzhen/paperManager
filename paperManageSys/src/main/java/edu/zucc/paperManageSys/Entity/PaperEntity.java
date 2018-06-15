@@ -125,4 +125,18 @@ public class PaperEntity {
 //    public int hashCode() {
 //        return Objects.hash(id, papername, papertype, teacherId, check, adminId, creatTime, editTime, paperUrl);
 //    }
+
+    @Override
+    public String toString() {
+        return "PaperEntity{" +
+                "id=" + id +
+                ", paperName='" + paperName + '\'' +
+                ", paperType=" + paperType +
+                ", teacherId=" + teacherId +
+                ", checked=" + checked +
+                ", adminId=" + adminId +
+                ", createTime=" + createTime +
+                ", paperUrl='" + paperUrl + '\'' +
+                '}';
+    }
 }

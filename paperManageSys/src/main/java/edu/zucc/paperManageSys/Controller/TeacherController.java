@@ -1,6 +1,8 @@
 package edu.zucc.paperManageSys.Controller;
 
+import edu.zucc.paperManageSys.Entity.ComplexPaper;
 import edu.zucc.paperManageSys.Entity.PaperEntity;
+import edu.zucc.paperManageSys.Entity.PaperTypeEntity;
 import edu.zucc.paperManageSys.Entity.UserEntity;
 import edu.zucc.paperManageSys.Service.PaperService;
 import edu.zucc.paperManageSys.Service.TeacherService;
@@ -57,16 +59,20 @@ public class TeacherController {
 
     @RequestMapping(path = "/teacher_up", method = RequestMethod.POST)
     public String teacherUp(Model model,
-                            @RequestParam("fileToUpload") MultipartFile[] folder)
+                            @RequestParam("fileToUpload") MultipartFile[] folder,
+                            @RequestParam("paperType") String paperType,
+                            @RequestParam("paperTitle") String paperName)
             throws Exception {
         if (hostHolder.getUser() == null) {
             throw new Exception("用户未登陆!");
         }
-        String path = FileUtil.BASE_PATH + "users/" + hostHolder.getUser().getUsername()+"/papers";
-        if (FileUtil.saveMultiFile(path, folder)) {
-            paperService.paperupload("111",folder[0].getOriginalFilename(),0, hostHolder.getUser().getId());
-        }else
+        try{
+            String path = FileUtil.BASE_PATH + "users/" + hostHolder.getUser().getUsername()+"/papers/"+paperName;
+            FileUtil.saveMultiFile(path, folder);
+            paperService.paperupload(paperName,folder[0].getOriginalFilename(),Integer.parseInt(paperType), hostHolder.getUser().getId());
+        }catch (Exception e){
             throw new Exception("上传失败!");
+        }
         return "redirect:/index";
     }
 
@@ -80,34 +86,47 @@ public class TeacherController {
 
     @RequestMapping(path = "/search", method = RequestMethod.POST)
     @ResponseBody
-    public String searchhistory(Model model,
-                              @RequestBody String data)
-            throws Exception {
+    public String searchhistory(Model model, @RequestBody String data) throws Exception {
         if (hostHolder.getUser() == null) {
             throw new Exception("用户未登陆!");
         }
-        logger.info("data:"+data);
         JSONObject jsonObj = (JSONObject)JSONValue.parseStrict(data);
         String timeFormerStr = jsonObj.getAsString("timeFormer");
         String timeLaterStr = jsonObj.getAsString("timeLater");
-        logger.info("timeFormer:"+timeFormerStr);
-        logger.info("timeLater:"+timeLaterStr);
 
         int teacherId=hostHolder.getUser().getId();
-        List<PaperEntity> paperList = null;
+        List<ComplexPaper> paperList = null;
         if(timeFormerStr.equals("none") || timeLaterStr.equals("none"))
             paperList = paperService.paperQueryAll(teacherId);
         else{
             SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-            paperList = paperService.paperQueryByIdAndTime(formater.parse(timeFormerStr), formater.parse(timeLaterStr), teacherId);
+            if(jsonObj.getAsNumber("isAdmin").intValue()==0)
+                paperList = paperService.paperQueryByIdAndTime(formater.parse(timeFormerStr), formater.parse(timeLaterStr), teacherId);
+            else
+                paperList = paperService.paperQueryByTime(formater.parse(timeFormerStr), formater.parse(timeLaterStr));
         }
 
         if(paperList == null)   return null;
         JSONArray result = new JSONArray();
-        for (PaperEntity paperEntity:paperList) {
+        for (ComplexPaper paperEntity:paperList) {
             result.appendElement(paperEntity);
         }
-        logger.info("Paper names:"+result.toJSONString());
+        return result.toJSONString();
+    }
+
+    @RequestMapping(path = "/search_type", method = RequestMethod.GET)
+    @ResponseBody
+    public String searchType(Model model) throws Exception {
+        if (hostHolder.getUser() == null) {
+            throw new Exception("用户未登陆!");
+        }
+
+        List<PaperTypeEntity> typeList = paperService.typeQueryAll();
+
+        JSONArray result = new JSONArray();
+        for (PaperTypeEntity typeEntity:typeList) {
+            result.appendElement(typeEntity);
+        }
         return result.toJSONString();
     }
 }

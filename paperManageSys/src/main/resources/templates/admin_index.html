@@ -16,8 +16,60 @@
 		.td_3{width:80px;overflow:hidden}
 		.td_4{width:80px;overflow:hidden}
 		.td_5{width:60px;overflow:hidden}
-		
 	</style>
+	<script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
+	<script>
+	$(function(){
+		update();
+    });
+
+    function update(){
+    	var data = {};
+    	data['isAdmin'] = 1;
+    	data['timeFormer'] = $("input#timeformer").val();
+    	data['timeLater'] = $("input#timelater").val();
+        $.ajax({
+            type:"POST",
+            url:"/search",
+            //发送数据格式为json
+            data:JSON.stringify(data),
+            contentType: 'application/json; charset=UTF-8',
+            //返回数据格式为json
+            dataType: "json",
+            //请求成功后要执行的函数，拼接html
+            success: function(data){
+            	$("table.teacher-paper-item").remove();
+            	var tableStr="<table border=1 class='teacher-paper-item'><tr>";
+            	tableStr+="<td class='td_1'>论文标题</td>";
+            	tableStr+="<td class='td_2'>上传时间</td>";
+            	tableStr+="<td class='td_3'>论文类型</td>";
+            	tableStr+="<td class='td_4'>教师</td>";
+            	tableStr+="<td class='td_5'>审核</td>";
+            	tableStr+="</tr></table>";
+            	$("div#paperList").append(tableStr);
+                var str="";
+                $.each(data,function(i,n){
+                	str+="<tr>";
+                    str+="<td>"+n.paperName+"</td>";
+                    str+="<td>"+n.createTime+"</td>";
+                    str+="<td>"+n.typeName+"</td>";
+                    str+="<td>"+n.teacherName+"</td>";
+                    if(n.checked=="否")
+                    	str+="<td><button onclick='check("+n.id+")'>审核</button></td>";
+                    else
+						str+="<td>已审核</td>";
+                    str+="</tr>";
+                });
+                $("table.teacher-paper-item").append(str);
+            }
+        });
+	}
+
+        function check(id){
+            console.log(id);
+            //remove($(a).parent().parent().attr("id"));
+        }
+	</script>
 </head>
 <body>
 	<!--[if lte IE8]>
@@ -41,11 +93,11 @@
 			</div>
 		</section>
 		<section class="paper-list">
-			论文上传时间：<input type="date" value="1990-09-24"/>至<input type="date" value="2018-06-16"/><button onclick="update()">确定</button>
-			<div class="paper">
-				<table border=1>
+			论文上传时间：<input type="date" id="timeformer" value="1990-09-24"/>至<input type="date" id="timelater" value="2018-06-16"/><button onclick="update()">确定</button>
+			<div class="paper" id="paperList">
+				<table border=1 class="teacher-paper-item">
 					<tr><td class="td_1">论文标题</td>  <td class="td_2">上传时间</td>  <td class="td_3">论文类型</td> <td class="td_4">上传人</td><td class="td_5">审核状态</td>
-					<tr><td>A</td><td>B</td><td>C</td><td>d</td><td>e</td>
+					</tr>
 				</table>
 			</div>
 		</section>

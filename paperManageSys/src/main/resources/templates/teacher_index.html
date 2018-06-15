@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/normalize.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/main.css">
+    <script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
     <style type="text/css">
         /*body.shangchuan{
              text-align:center;
@@ -17,6 +18,26 @@
              color: black;
         }*/
     </style>
+    <script>
+    	$(function(){
+		    loadPaperType();
+        });
+        function loadPaperType() {
+        $.ajax({
+            type:"GET",
+            url:"/search_type",
+            //返回数据格式为json
+            dataType: "json",
+            //请求成功后要执行的函数，拼接html
+            success: function(data){
+                $.each(data,function(i,n){
+                    var str = "<option value='"+n.id+"'>"+n.typeName+"</option>";
+                	$("#papertype").append(str);
+                });
+            }
+        });
+        }
+    </script>
     <script type="text/javascript">
         function fileSelected() {
             var file = document.getElementById('fileToUpload').files[0];
@@ -105,18 +126,21 @@
         </br>
         <div style="text-align: center;">
             <form id="form1" enctype="multipart/form-data" method="post" action="/teacher_up">
+                论文题目:<input type="text" name="paperTitle"/>
                 <div class="row">
-                    <!--<label for="fileToUpload">Select a File to Upload</label>-->
                     <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
                 </div>
                 <div id="fileName"></div>
                 <div id="fileSize"></div>
                 <div id="fileType"></div>
-                <!--<div class="row">
-
-                </div>-->
                 <div class="row">
-                    <input type="button" onclick="uploadFile()" value="Upload" />
+                    论文类型：
+                    <select name="paperType" id="papertype">
+                        <option value="0">选择论文类型</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <input type="submit" onclick="uploadFile()" value="提交" />
                 </div>
                 <div id="progressNumber"></div>
             </form>
@@ -140,5 +164,6 @@
 </div><!-- container结束 -->
 <script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="../script/main.js"></script>
+
 </body>
 </html>
