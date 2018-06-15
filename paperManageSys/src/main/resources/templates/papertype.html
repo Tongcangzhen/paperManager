@@ -1,79 +1,155 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title></title>
-<script src="../jquery/jquery-1.11.0.js"></script>
-<script>
-function aa() {
-var name = $("#name").val();
+    <meta charset="UTF-8">
+    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>浙江大学城市学院论文管理系统</title>
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="../script/jquery-3.1.1.min.js"></script>
+    <script>
 
-$("table").append("<tr><td><input type='checkbox' name='ck'></td><td>" + name + "</td><td><button onclick='ff(this)'>删除</button></td></tr>");
-}
-function ff(a){
-$(a).parent().parent().remove();
-}
-function ckall(e){
-var es= $(":input[name='ck']");
-for(var i=0;i<es.length;i++){
-es[i].checked=e.checked;
-}
-} 
-function quanxuan(){
-var ckss=$("input[name='ck']")
-for(var i in ckss) {
-if (ckss[i].checked==false) {
-ckss[i].checked=true;
-} else{
-ckss[i].checked=false;
-}
-}
-}
-function piliang(){
-var checks=$(":checked[name=ck]");
-if (checks.length==0) {
-alert("请至少选择一条删除！");
-return;
-}
+        $(function(){
+            update();
+        });
+        function update() {
+            $.ajax({
+                type:"POST",
+                url:"/type_list",
+                //返回数据格式为json
+                dataType: "json",
+                //请求成功后要执行的函数，拼接html
+                success: function(data){
+                    $.each(data,function(i,n){
+                        appand(n.typeName,n.id);
+                    });
+                }
+            });
+        }
 
-for(var i in checks){
-checks[i].parentNode.parentNode.remove();
-}
-}
+        function add() {
+            var name = $("#name").val();
+            var data = {};
+    	    data['typeName'] = name;
+            $.ajax({
+                type:"POST",
+                url:"/type_add",
+                //发送数据格式为json
+                data:JSON.stringify(data),
+                contentType: 'application/json; charset=UTF-8',
+                //返回数据格式为json
+                dataType: "json",
+                //请求成功后要执行的函数，拼接html
+                success: function(data){
+                    location.reload();
+                }
+            });
+        }
 
+        function remove(id) {
+            var data = {};
+    	    data['typeId'] = id;
+            $.ajax({
+                type:"POST",
+                url:"/type_remove",
+                //发送数据格式为json
+                data:JSON.stringify(data),
+                contentType: 'application/json; charset=UTF-8',
+                //返回数据格式为json
+                dataType: "json",
+                //请求成功后要执行的函数，拼接html
+                success: function(data){
+                    location.reload();
+                }
+            });
+        }
 
+        function appand(name,id) {
+            $("table").append("<tr id='"+id+"'><td><input type='checkbox' name='ck'></td><td>" + name + "</td><td><button onclick='ff(this)'>删除</button></td></tr>");
+        }
+        function ff(a){
+            console.log($(a).parent().parent().attr("id"));
+            remove($(a).parent().parent().attr("id"));
+        }
+        function ckall(e){
+            var es= $(":input[name='ck']");
+            for(var i=0;i<es.length;i++){
+            es[i].checked=e.checked;
+            }
+        }
+        function selectAll(){
+            var ckss=$("input[name='ck']")
+            for(var i in ckss) {
+                if (ckss[i].checked==false) {
+                    ckss[i].checked=true;
+                } else{
+                ckss[i].checked=false;
+                }
+            }
+        }
+        function piliang(){
+            var checks=$(":checked[name=ck]");
+            if (checks.length==0) {
+                alert("请至少选择一条删除！");
+                return;
+            }
 
-$(function() {
-var shengfen = [["海淀","大兴"],["邯郸", "廊坊"], ["安阳", "洛阳"]];
-$("#pro").change(function() {
-$("#cityx").siblings().remove();
-var sheng = $(this).val();//省份对应value
-for(var i = 0; i < shengfen[sheng].length; i++) {
-var $o = $("<option></option>");//创建option标签
-$o.html(shengfen[sheng][i]);
-$("#city").append($o);}});});
+            var ids = "";
+            checks.each(function(){
+                ids+=$(this).parent().parent().attr("id");
+                ids+=",";
+            });
 
-</script>
-<style>
+            remove(ids.substring(0,ids.length-1));
+        }
+
+    </script>
+    <style>
 *{
 padding: 0;
 margin: 0;
+}
+.paper-type{background-size:50px 50px;height:50px;width:400px;
+    position:absolute;margin:auto;left:0;right:0;top:300px;bottom:0;
+}
+body{
+    position:relative;
 }
 </style>
 </head>
 
 
 <body style="margin: 0 auto;">
-<div>　论文类型<input id="name">　<button onclick="aa()">添加</button><br/>    　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　    <button onclick="quanxuan()">全选/返选</button>　　<button onclick="piliang()">批量删除</button></div>
-<div>
-<table style="padding: 1px;width: 700px;margin-top: 5px;" border="1">
-<tr style="background-color: #919191;">
-<td><input type="checkbox" name="chee" onchange="ckall(this)"></td>
-<td>论文类型</td>
-<td>操作</td>
-</tr>
-</table>
+<header>
+    <div class="logo">
+        <img src="../images/logo.png" alt="浙江大学城市学院logo" class="logo-img vertical-center">
+        <h1 class="vertical-center">论文管理系统</h1>
+    </div>
+    <div class="logoff">
+        <a href="/logout" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
+    </div>
+
+</header>
+<div class="paper-type">
+    <div>　论文类型<input type="text" id="name">　<button onclick="add()">添加</button>
+        <button onclick="selectAll()">全选/返选</button>   <button onclick="piliang()">批量删除</button></div>
+    <div>
+        <table style="padding: 1px;width: 700px;margin-top: 5px;" border="1">
+            <tr style="background-color: #919191;">
+                <td><input type="checkbox" name="chee" onchange="ckall(this)"></td>
+                <td>论文类型</td>
+                <td>操作</td>
+            </tr>
+        </table>
+    </div>
 </div>
+
+<script>
+</script>
 </body>
 
 

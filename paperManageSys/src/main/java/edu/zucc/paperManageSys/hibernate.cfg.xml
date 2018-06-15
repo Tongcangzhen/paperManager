@@ -25,6 +25,7 @@
 
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">validate</property>
         <mapping resource="edu/zucc/paperManageSys/Entity/LoginTicketEntity.hbm.xml"/>
         <mapping class="edu.zucc.paperManageSys.Entity.LoginTicketEntity"/>
         <mapping resource="edu/zucc/paperManageSys/Entity/PaperEntity.hbm.xml"/>

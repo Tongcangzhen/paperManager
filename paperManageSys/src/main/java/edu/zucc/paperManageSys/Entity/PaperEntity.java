@@ -2,6 +2,7 @@ package edu.zucc.paperManageSys.Entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -13,32 +14,28 @@ public class PaperEntity {
     private int id;
 
     @Basic
-    @Column(name = "papername", nullable = true, length = 45)
-    private String papername;
+    @Column(name = "paper_name", nullable = false, length = 45)
+    private String paperName;
 
     @Basic
-    @Column(name = "papertype", nullable = false)
-    private Integer papertype;
+    @Column(name = "paper_type", nullable = false)
+    private Integer paperType;
 
     @Basic
-    @Column(name = "teacher_id", nullable = true)
+    @Column(name = "teacher_id", nullable = false)
     private Integer teacherId;
 
     @Basic
-    @Column(name = "check", nullable = true)
-    private Integer check;
+    @Column(name = "checked", nullable = false)
+    private Integer checked;
 
     @Basic
     @Column(name = "admin_id", nullable = true)
     private Integer adminId;
 
     @Basic
-    @Column(name = "creat_time", nullable = true)
-    private Timestamp creatTime;
-
-    @Basic
-    @Column(name = "edit_time", nullable = true)
-    private Timestamp editTime;
+    @Column(name = "create_time", nullable = true)
+    private Date createTime;
 
     @Basic
     @Column(name = "paper_url", nullable = true, length = 255)
@@ -52,20 +49,20 @@ public class PaperEntity {
         this.id = id;
     }
 
-    public String getPapername() {
-        return papername;
+    public String getPaperName() {
+        return paperName;
     }
 
-    public void setPapername(String papername) {
-        this.papername = papername;
+    public void setPaperName(String paperName) {
+        this.paperName = paperName;
     }
 
-    public Integer getPapertype() {
-        return papertype;
+    public Integer getPaperType() {
+        return paperType;
     }
 
-    public void setPapertype(Integer papertype) {
-        this.papertype = papertype;
+    public void setPaperType(Integer paperType) {
+        this.paperType = paperType;
     }
 
     public Integer getTeacherId() {
@@ -76,12 +73,12 @@ public class PaperEntity {
         this.teacherId = teacherId;
     }
 
-    public Integer getCheck() {
-        return check;
+    public Integer getChecked() {
+        return checked;
     }
 
-    public void setCheck(Integer check) {
-        this.check = check;
+    public void setChecked(Integer checked) {
+        this.checked = checked;
     }
 
     public Integer getAdminId() {
@@ -92,20 +89,12 @@ public class PaperEntity {
         this.adminId = adminId;
     }
 
-    public Timestamp getCreatTime() {
-        return creatTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatTime(Timestamp creatTime) {
-        this.creatTime = creatTime;
-    }
-
-    public Timestamp getEditTime() {
-        return editTime;
-    }
-
-    public void setEditTime(Timestamp editTime) {
-        this.editTime = editTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getPaperUrl() {
@@ -116,24 +105,24 @@ public class PaperEntity {
         this.paperUrl = paperUrl;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PaperEntity that = (PaperEntity) o;
-        return id == that.id &&
-                Objects.equals(papername, that.papername) &&
-                Objects.equals(papertype, that.papertype) &&
-                Objects.equals(teacherId, that.teacherId) &&
-                Objects.equals(check, that.check) &&
-                Objects.equals(adminId, that.adminId) &&
-                Objects.equals(creatTime, that.creatTime) &&
-                Objects.equals(editTime, that.editTime) &&
-                Objects.equals(paperUrl, that.paperUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, papername, papertype, teacherId, check, adminId, creatTime, editTime, paperUrl);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        PaperEntity that = (PaperEntity) o;
+//        return id == that.id &&
+//                Objects.equals(papername, that.papername) &&
+//                Objects.equals(papertype, that.papertype) &&
+//                Objects.equals(teacherId, that.teacherId) &&
+//                Objects.equals(check, that.check) &&
+//                Objects.equals(adminId, that.adminId) &&
+//                Objects.equals(creatTime, that.creatTime) &&
+//                Objects.equals(editTime, that.editTime) &&
+//                Objects.equals(paperUrl, that.paperUrl);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, papername, papertype, teacherId, check, adminId, creatTime, editTime, paperUrl);
+//    }
 }

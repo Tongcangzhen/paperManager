@@ -20,9 +20,7 @@ public class IndexController {
     public String index(Model model) {
         try {
             UserEntity user = hostHolder.getUser();
-            if(user==null){
-                return "redirect:/reglogin";
-            }else if(user.getType()==1){
+            if(user.getType()==1){
                 String name = user.getName();
                 model.addAttribute("username", name.equals("NULL") ? user.getUsername() : name );
                 return "/admin_index";
