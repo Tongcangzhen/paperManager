@@ -9,17 +9,19 @@ public class ComplexPaper {
     private String typeName;
     private Integer teacherId;
     private String teacherName;
+    private String teacherUserName;
     private String checked;
     private String createTime;
     private String paperUrl;
 
-    public ComplexPaper(int id, String paperName, Integer paperType, String typeName, Integer teacherId, String teacherName, String checked, String createTime, String paperUrl) {
+    public ComplexPaper(int id, String paperName, Integer paperType, String typeName, Integer teacherId, String teacherName, String teacherUserName, String checked, String createTime, String paperUrl) {
         this.id = id;
         this.paperName = paperName;
         this.paperType = paperType;
         this.typeName = typeName;
         this.teacherId = teacherId;
         this.teacherName = teacherName;
+        this.teacherUserName = teacherUserName;
         this.checked = checked;
         this.createTime = createTime;
         this.paperUrl = paperUrl;
@@ -97,6 +99,14 @@ public class ComplexPaper {
         this.paperUrl = paperUrl;
     }
 
+    public String getTeacherUserName() {
+        return teacherUserName;
+    }
+
+    public void setTeacherUserName(String teacherUserName) {
+        this.teacherUserName = teacherUserName;
+    }
+
     @Override
     public String toString() {
         return "ComplexPaper{" +
@@ -106,8 +116,9 @@ public class ComplexPaper {
                 ", typeName='" + typeName + '\'' +
                 ", teacherId=" + teacherId +
                 ", teacherName='" + teacherName + '\'' +
-                ", checked=" + checked +
-                ", createTime=" + createTime +
+                ", teacherUserName='" + teacherUserName + '\'' +
+                ", checked='" + checked + '\'' +
+                ", createTime='" + createTime + '\'' +
                 ", paperUrl='" + paperUrl + '\'' +
                 '}';
     }

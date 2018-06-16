@@ -31,7 +31,7 @@ public class PaperService {
     @Autowired
     private UserDao userDao;
 
-    public boolean paperupload(String papername, String filename, int type, int teacherId) {
+    public boolean paperUpload(String papername, String filename, int type, int teacherId) {
         try{
             PaperEntity paperEntity = new PaperEntity();
             paperEntity.setPaperName(papername);
@@ -65,11 +65,10 @@ public class PaperService {
         List<ComplexPaper> result = new ArrayList<>();
         try{
             for (PaperEntity paperEntity:paperlist) {
-                logger.info(paperEntity.toString());
-
                 int teacherId = paperEntity.getTeacherId();
                 UserEntity teacherEntity = userDao.findById(teacherId);
-                String teacherName = teacherEntity.getName().equals("NULL")?teacherEntity.getUsername():teacherEntity.getName();
+                String teacherUserName = teacherEntity.getUsername();
+                String teacherName = teacherEntity.getName().equals("NULL")?teacherUserName:teacherEntity.getName();
                 int typeId = paperEntity.getPaperType();
                 String typeName = typeId==0?"未选择":paperTypeDao.findById(typeId).getTypeName();
                 String checked = paperEntity.getChecked()==0?"否":"是";
@@ -80,6 +79,7 @@ public class PaperService {
                         typeName,
                         teacherId,
                         teacherName,
+                        teacherUserName,
                         checked,
                         paperEntity.getCreateTime().toString(),
                         paperEntity.getPaperUrl()
@@ -120,6 +120,16 @@ public class PaperService {
             logger.error("paperQueryByIdAndTime:"+e.getMessage());
         }
         return mergePaperInfo(paperlist);
+    }
+
+    public PaperEntity paperQueryById(int id) {
+        PaperEntity paper = null;
+        try{
+            paper = paperDao.findById(id);
+        }catch (Exception e){
+            logger.error("paperQueryById:"+e.getMessage());
+        }
+        return paper;
     }
 
     public boolean typeAdd(String name) {

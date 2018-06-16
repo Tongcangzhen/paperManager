@@ -1,7 +1,8 @@
 package edu.zucc.paperManageSys.util;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.zucc.paperManageSys.Controller.LoginController;
 import org.slf4j.Logger;
@@ -10,33 +11,46 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class FileUtil {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-    public static String BASE_PATH = "D:/PaperManageSysFiles/";
+    public static String BASE_PATH = "files/";
+
 
     //在basePath下保存上传的文件夹
-    public static boolean saveMultiFile(String basePath, MultipartFile[] files) {
-        if (files == null || files.length == 0) {
-            return false;
+    public static Map<String, String> saveMultiFile(String basePath, MultipartFile[] files) {
+        Map<String, String> result = new HashMap<String, String>();
+        if(files == null)  {
+            result.put("error","上传失败，files为null值");
+            return result;
         }
-        if (basePath.endsWith("/")) {
-            basePath = basePath.substring(0, basePath.length() - 1);
-        }
+
         for (MultipartFile file : files) {
-            String filePath = basePath + "/" + file.getOriginalFilename();
-            logger.debug(filePath);
-            makeDir(filePath);
-            File dest = new File(filePath);
-            try {
-                file.transferTo(dest);
-                if(!(new File(filePath)).isFile())  return false;
-            } catch (IllegalStateException | IOException e) {
-                e.printStackTrace();
+            if (file.isEmpty()) {
+                result.put("error", "上传失败，存在空文件");
+                return result;
             }
+            try {
+                File temp = new File(basePath + "/" + file.getOriginalFilename());
+                String path = temp.getAbsolutePath();
+                makeDir(path.substring(0, path.lastIndexOf("\\")) + "/");
+
+                File dest = new File(path);
+                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(dest));
+                out.write(file.getBytes());
+                out.flush();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                result.put("error", e.getMessage());
+            }
+
         }
-        return true;
+
+        return result;
     }
+
 
     //确保目录存在，不存在则创建
     private static void makeDir(String filePath) {
+        logger.info("makeDir:"+filePath);
         if (filePath.lastIndexOf('/') > 0) {
             String dirPath = filePath.substring(0, filePath.lastIndexOf('/'));
             File dir = new File(dirPath);

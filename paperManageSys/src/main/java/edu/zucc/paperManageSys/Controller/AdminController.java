@@ -49,7 +49,6 @@ public class AdminController {
         for (PaperTypeEntity typeEntity:typeList) {
             result.appendElement(typeEntity);
         }
-        logger.info("Paper type names:"+result.toJSONString());
         return result.toJSONString();
     }
 

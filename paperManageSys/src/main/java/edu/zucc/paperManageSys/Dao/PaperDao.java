@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Date;
 import java.util.List;
 
-public interface PaperDao extends CrudRepository<PaperEntity, String> {
+public interface PaperDao extends CrudRepository<PaperEntity, Integer> {
     PaperEntity findById(int id);
     List<PaperEntity> findByTeacherId(int teacherId);
 

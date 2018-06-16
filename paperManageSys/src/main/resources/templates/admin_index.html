@@ -50,7 +50,8 @@
                 var str="";
                 $.each(data,function(i,n){
                 	str+="<tr>";
-                    str+="<td>"+n.paperName+"</td>";
+                    //str+="<td><a href='http://localhost:8080/files/users/"+n.teacherUserName+"/papers/"+n.paperName+"/"+n.paperUrl+"' download='"+n.paperName+"'>"+n.paperName+"</a></td>";
+                   	str+="<td><a href='/paper_download?id="+n.id+"' download='"+n.paperUrl+"'>"+n.paperName+"</a></td>";
                     str+="<td>"+n.createTime+"</td>";
                     str+="<td>"+n.typeName+"</td>";
                     str+="<td>"+n.teacherName+"</td>";
@@ -93,7 +94,7 @@
 			</div>
 		</section>
 		<section class="paper-list">
-			论文上传时间：<input type="date" id="timeformer" value="1990-09-24"/>至<input type="date" id="timelater" value="2018-06-16"/><button onclick="update()">确定</button>
+			论文上传时间：<input type="date" id="timeformer" value="1990-09-24"/>至<input type="date" id="timelater" value="2020-06-16"/><button onclick="update()">确定</button>
 			<div class="paper" id="paperList">
 				<table border=1 class="teacher-paper-item">
 					<tr><td class="td_1">论文标题</td>  <td class="td_2">上传时间</td>  <td class="td_3">论文类型</td> <td class="td_4">上传人</td><td class="td_5">审核状态</td>

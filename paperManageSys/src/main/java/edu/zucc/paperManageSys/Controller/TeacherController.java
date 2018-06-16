@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class TeacherController {
@@ -53,25 +54,6 @@ public class TeacherController {
         if (hostHolder.getUser() != null) {
             teacherService.modify(name,jobtitle,email,gender);
         }else {
-        }
-        return "redirect:/index";
-    }
-
-    @RequestMapping(path = "/teacher_up", method = RequestMethod.POST)
-    public String teacherUp(Model model,
-                            @RequestParam("fileToUpload") MultipartFile[] folder,
-                            @RequestParam("paperType") String paperType,
-                            @RequestParam("paperTitle") String paperName)
-            throws Exception {
-        if (hostHolder.getUser() == null) {
-            throw new Exception("用户未登陆!");
-        }
-        try{
-            String path = FileUtil.BASE_PATH + "users/" + hostHolder.getUser().getUsername()+"/papers/"+paperName;
-            FileUtil.saveMultiFile(path, folder);
-            paperService.paperupload(paperName,folder[0].getOriginalFilename(),Integer.parseInt(paperType), hostHolder.getUser().getId());
-        }catch (Exception e){
-            throw new Exception("上传失败!");
         }
         return "redirect:/index";
     }
