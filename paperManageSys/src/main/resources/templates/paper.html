@@ -84,7 +84,7 @@
                 var str="";
                 $.each(data,function(i,n){
                 	str+="<tr>";
-                    str+="<td>"+n.paperName+"</td>";
+                    str+="<td><a href='/paper_download?id="+n.id+"' download='"+n.paperUrl+"'>"+n.paperName+"</a></td>";
                     str+="<td>"+n.createTime+"</td>";
                     str+="<td>"+n.typeName+"</td>";
                     str+="<td>"+n.teacherName+"</td>";

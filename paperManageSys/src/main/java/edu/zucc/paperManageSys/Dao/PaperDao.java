@@ -9,10 +9,11 @@ import java.util.List;
 
 public interface PaperDao extends CrudRepository<PaperEntity, Integer> {
     PaperEntity findById(int id);
-    List<PaperEntity> findByTeacherId(int teacherId);
 
-    @Query(value = "SELECT * FROM paper WHERE create_time > ?1 AND create_time < ?2 AND teacher_id = ?3", nativeQuery = true)
-    List<PaperEntity> findByIdAndTime(Date formerTime, Date laterTime, int teacherId);
+    List<PaperEntity> findAllByTeacherUsername(String username);
+
+    @Query(value = "SELECT * FROM paper WHERE create_time > ?1 AND create_time < ?2 AND teacher_username = ?3", nativeQuery = true)
+    List<PaperEntity> findByIdAndTime(Date formerTime, Date laterTime, String username);
 
     @Query(value = "SELECT * FROM paper WHERE create_time > ?1 AND create_time < ?2", nativeQuery = true)
     List<PaperEntity> findByTime(Date formerTime, Date laterTime);

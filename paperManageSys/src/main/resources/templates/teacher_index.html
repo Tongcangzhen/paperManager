@@ -54,7 +54,15 @@
             }
         }
 
-        function uploadFile() {
+        function upload() {
+            if($("input#papertitle").val()==""){
+                alert("请填写论文标题!");
+                return;
+            }
+            if(document.getElementById("papertype").options[0].selected == true){
+                alert("请选择论文类型!");
+                return;
+            }
             var fd = new FormData();
             fd.append("fileToUpload", document.getElementById('fileToUpload').files[0]);
             var xhr = new XMLHttpRequest();
@@ -64,6 +72,8 @@
             xhr.addEventListener("abort", uploadCanceled, false);
             xhr.open("POST", "/teacher_up");
             xhr.send(fd);
+
+            $("form#form1").submit();
         }
 
         function uploadProgress(evt) {
@@ -126,7 +136,7 @@
         </br>
         <div style="text-align: center;">
             <form id="form1" enctype="multipart/form-data" method="post" action="/teacher_up">
-                论文题目:<input type="text" name="paperTitle"/>
+                论文题目:<input type="text" id="papertitle" name="paperTitle"/>
                 <div class="row">
                     <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
                 </div>
@@ -140,7 +150,7 @@
                     </select>
                 </div>
                 <div class="row">
-                    <input type="submit" onclick="uploadFile()" value="提交" />
+                    <input type="button" onclick="upload()" value="提交" />
                 </div>
                 <div id="progressNumber"></div>
             </form>
@@ -163,7 +173,6 @@
 
 </div><!-- container结束 -->
 <script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="../script/main.js"></script>
 
 </body>
 </html>

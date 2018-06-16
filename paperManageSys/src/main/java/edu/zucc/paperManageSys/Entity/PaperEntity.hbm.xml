@@ -14,8 +14,8 @@
         <property name="paperType">
             <column name="paper_type" sql-type="int(11)" not-null="true"/>
         </property>
-        <property name="teacherId">
-            <column name="teacher_id" sql-type="int(11)" not-null="true"/>
+        <property name="teacherUsername">
+            <column name="teacher_username" sql-type="varchar(45)" not-null="true"/>
         </property>
         <property name="checked">
             <column name="checked" sql-type="int(11)" not-null="true"/>

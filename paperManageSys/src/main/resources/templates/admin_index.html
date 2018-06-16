@@ -3,7 +3,7 @@
 	  xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。 -->  
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面。 -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>浙江大学城市学院论文管理系统</title>
 	<link rel="stylesheet" href="../css/normalize.css">
@@ -17,6 +17,28 @@
 		.td_4{width:80px;overflow:hidden}
 		.td_5{width:60px;overflow:hidden}
 	</style>
+	<style>/* 定义模态对话框外面的覆盖层样式 */
+        #modal-overlay {
+             visibility: hidden;
+             position: absolute;   /* 使用绝对定位或固定定位  */
+             left: 0px;
+             top: 0px;
+             width:100%;
+             height:100%;
+             text-align:center;
+             z-index: 1000;
+             background-color: #333;
+             opacity: 0.9;   /* 背景半透明 */
+        }
+        /* 模态框样式 */
+        .modal-data{
+             width:300px;
+             margin: 100px auto;
+             background-color: #fff;
+             border:1px solid #000;
+             padding:15px;
+             text-align:center;
+        }</style>
 	<script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
 	<script>
 	$(function(){
@@ -50,15 +72,14 @@
                 var str="";
                 $.each(data,function(i,n){
                 	str+="<tr>";
-                    //str+="<td><a href='http://localhost:8080/files/users/"+n.teacherUserName+"/papers/"+n.paperName+"/"+n.paperUrl+"' download='"+n.paperName+"'>"+n.paperName+"</a></td>";
                    	str+="<td><a href='/paper_download?id="+n.id+"' download='"+n.paperUrl+"'>"+n.paperName+"</a></td>";
                     str+="<td>"+n.createTime+"</td>";
                     str+="<td>"+n.typeName+"</td>";
                     str+="<td>"+n.teacherName+"</td>";
-                    if(n.checked=="否")
-                    	str+="<td><button onclick='check("+n.id+")'>审核</button></td>";
+                    if(n.checked=="待审核")
+                    	str+="<td><button onclick='show("+n.id+")'>审核</button></td>";
                     else
-						str+="<td>已审核</td>";
+						str+="<td>"+n.checked+"</td>";
                     str+="</tr>";
                 });
                 $("table.teacher-paper-item").append(str);
@@ -66,65 +87,101 @@
         });
 	}
 
-        function check(id){
-            console.log(id);
-            //remove($(a).parent().parent().attr("id"));
+		function show(id){
+			var e1 = document.getElementById('modal-overlay');
+   			e1.style.visibility = (e1.style.visibility == "visible")? "hidden" : "visible";
+   			$("#pass").val(id);
+   			$("#unpass").val(id);
+		}
+
+		function hide(){
+			var e1 = document.getElementById('modal-overlay');
+   			e1.style.visibility = (e1.style.visibility == "visible")? "hidden" : "visible";
+   			$("#pass").val(0);
+   			$("#unpass").val(0);
+		}
+
+        function check(a,checked){
+            var data={};
+            data['id'] = $(a).val();
+            data['checked'] = checked;
+   			$.ajax({
+            	type:"POST",
+            	url:"/check",
+            	//发送数据格式为json
+            	data:JSON.stringify(data),
+            	contentType: 'application/json; charset=UTF-8',
+            	//返回数据格式为json
+            	dataType: "json",
+            	//请求成功后要执行的函数，拼接html
+            	success: function(data){
+            		hide();
+            	}
+			});
+
         }
 	</script>
 </head>
 <body>
-	<!--[if lte IE8]>
-	<p class="browserupdate">您的浏览器版本太老，请到<a href="http://browsehappy.com">这里</a>更新，以获取最佳的浏览体验。</p>
-	<![endif]-->
-	<header>
-		<div class="logo">
-			<img src="../images/logo.png" alt="浙江大学城市学院logo" class="logo-img vertical-center">
-			<h1 class="vertical-center">论文管理系统</h1>
+<!--[if lte IE8]>
+<p class="browserupdate">您的浏览器版本太老，请到<a href="http://browsehappy.com">这里</a>更新，以获取最佳的浏览体验。</p>
+<![endif]-->
+<header>
+	<div class="logo">
+		<img src="../images/logo.png" alt="浙江大学城市学院logo" class="logo-img vertical-center">
+		<h1 class="vertical-center">论文管理系统</h1>
+	</div>
+	<div class="logoff">
+		<a href="/logout" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
+	</div>
+</header><!-- header结束 -->
+<div class="container">
+	<section class="person-info box">
+		<img src="../images/my.png" alt="用户图片" class="horizontal-center">
+		<div class="horizontal-center">
+			<span>您好，<em class="username" th:text="${username}"></em> !</span>
+			<span><h3>管理员主页</h3></span>
 		</div>
-        <div class="logoff">
-            <a href="/logout" id="logout"><img src="../images/out.png" alt="注销登录">注销登录</a>
-        </div>
-	</header><!-- header结束 -->
-	<div class="container">
-		<section class="person-info box">
-			<img src="../images/my.png" alt="用户图片" class="horizontal-center">
-			<div class="horizontal-center">
-				<span>您好，<em class="username" th:text="${username}"></em> !</span>
-				<span><h3>管理员主页</h3></span>
-			</div>
-		</section>
-		<section class="paper-list">
-			论文上传时间：<input type="date" id="timeformer" value="1990-09-24"/>至<input type="date" id="timelater" value="2020-06-16"/><button onclick="update()">确定</button>
-			<div class="paper" id="paperList">
-				<table border=1 class="teacher-paper-item">
-					<tr><td class="td_1">论文标题</td>  <td class="td_2">上传时间</td>  <td class="td_3">论文类型</td> <td class="td_4">上传人</td><td class="td_5">审核状态</td>
-					</tr>
-				</table>
-			</div>
-		</section>
-		
-		<section class="seat-release box">
-			<div style="text-align:center">
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-			</br>
-				<a href="/papertype">
-					<button>论文类别管理</button>
-				</a>	
-			</div>	
-			
-		</section>
+	</section>
+	<section class="paper-list">
+		论文上传时间：<input type="date" id="timeformer" value="1990-09-24"/>至<input type="date" id="timelater" value="2020-06-16"/><button onclick="update()">确定</button>
+		<div class="paper" id="paperList">
+			<table border=1 class="teacher-paper-item">
+				<tr><td class="td_1">论文标题</td>  <td class="td_2">上传时间</td>  <td class="td_3">论文类型</td> <td class="td_4">上传人</td><td class="td_5">审核状态</td>
+				</tr>
+			</table>
+		</div>
+	</section>
 
-	</div><!-- container结束 -->
-	<script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
-	<script type="text/javascript" src="../script/main.js"></script>
-	<script src="../bootstrap/js/bootstrap.min.js"></script>
-	<script>
-	</script>
+	<section class="seat-release box">
+		<div style="text-align:center">
+			</br>
+			</br>
+			</br>
+			</br>
+			</br>
+			</br>
+			</br>
+			</br>
+			<a href="/papertype">
+				<button>论文类别管理</button>
+			</a>
+		</div>
+
+	</section>
+
+</div><!-- container结束 -->
+<div id="modal-overlay">
+	<div class="modal-data">
+		<p>审核结果 </p>
+		<button id="pass" value="0" onclick="check(this,1)">通      过</button>		<button id="unpass" value="0" onclick="check(this,2)">不通过</button>
+		<p><a onclick="hide()" href="">关闭</a></p>
+	</div>
+</div>
+<script type="text/javascript" src="../script/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../script/main.js"></script>
+<script src="../script/bootstrap.min.js"></script>
+<script>
+</script>
 </body>
 </html>

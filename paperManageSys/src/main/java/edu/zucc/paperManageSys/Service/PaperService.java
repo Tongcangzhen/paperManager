@@ -31,12 +31,12 @@ public class PaperService {
     @Autowired
     private UserDao userDao;
 
-    public boolean paperUpload(String papername, String filename, int type, int teacherId) {
+    public boolean paperUpload(String papername, String filename, int type, String teacherUsername) {
         try{
             PaperEntity paperEntity = new PaperEntity();
             paperEntity.setPaperName(papername);
             paperEntity.setPaperType(type);
-            paperEntity.setTeacherId(teacherId);
+            paperEntity.setTeacherUsername(teacherUsername);
             paperEntity.setChecked(0);
             paperEntity.setAdminId(0);
             paperEntity.setPaperUrl(filename);
@@ -48,10 +48,10 @@ public class PaperService {
         return true;
     }
 
-    public boolean check(int paperId, int adminId) {
+    public boolean check(int paperId,int checked, int adminId) {
         try{
             PaperEntity paperEntity = paperDao.findById(paperId);
-            paperEntity.setChecked(1);
+            paperEntity.setChecked(checked);
             paperEntity.setAdminId(adminId);
             paperDao.save(paperEntity);
         }catch (Exception e){
@@ -65,19 +65,23 @@ public class PaperService {
         List<ComplexPaper> result = new ArrayList<>();
         try{
             for (PaperEntity paperEntity:paperlist) {
-                int teacherId = paperEntity.getTeacherId();
-                UserEntity teacherEntity = userDao.findById(teacherId);
-                String teacherUserName = teacherEntity.getUsername();
+                String teacherUserName = paperEntity.getTeacherUsername();
+                UserEntity teacherEntity = userDao.findByUsername(teacherUserName);
                 String teacherName = teacherEntity.getName().equals("NULL")?teacherUserName:teacherEntity.getName();
                 int typeId = paperEntity.getPaperType();
                 String typeName = typeId==0?"未选择":paperTypeDao.findById(typeId).getTypeName();
-                String checked = paperEntity.getChecked()==0?"否":"是";
+                String checked;
+                switch (paperEntity.getChecked()){
+                    case 0:checked="待审核";break;
+                    case 1:checked="已通过";break;
+                    case 2:checked="未通过";break;
+                    default:checked="待审核";break;
+                }
                 ComplexPaper paper = new ComplexPaper(
                         paperEntity.getId(),
                         paperEntity.getPaperName(),
                         typeId,
                         typeName,
-                        teacherId,
                         teacherName,
                         teacherUserName,
                         checked,
@@ -92,20 +96,20 @@ public class PaperService {
         return result;
     }
 
-    public List<ComplexPaper> paperQueryAll(int teacherId) {
+    public List<ComplexPaper> paperQueryAll(String username) {
         List<PaperEntity> paperlist = null;
         try{
-            paperlist = paperDao.findByTeacherId(teacherId);
+            paperlist = paperDao.findAllByTeacherUsername(username);
         }catch (Exception e){
             logger.error("paperQueryAll:"+e.getMessage());
         }
         return mergePaperInfo(paperlist);
     }
 
-    public List<ComplexPaper> paperQueryByIdAndTime(Date formerTime, Date laterTime, int teacherId) {
+    public List<ComplexPaper> paperQueryByIdAndTime(Date formerTime, Date laterTime, String username) {
         List<PaperEntity> paperlist = null;
         try{
-            paperlist = paperDao.findByIdAndTime(formerTime, laterTime, teacherId);
+            paperlist = paperDao.findByIdAndTime(formerTime, laterTime, username);
         }catch (Exception e){
             logger.error("paperQueryByIdAndTime:"+e.getMessage());
         }

@@ -22,8 +22,8 @@ public class PaperEntity {
     private Integer paperType;
 
     @Basic
-    @Column(name = "teacher_id", nullable = false)
-    private Integer teacherId;
+    @Column(name = "teacher_username", nullable = false, length = 45)
+    private String teacherUsername;
 
     @Basic
     @Column(name = "checked", nullable = false)
@@ -65,12 +65,12 @@ public class PaperEntity {
         this.paperType = paperType;
     }
 
-    public Integer getTeacherId() {
-        return teacherId;
+    public String getTeacherUsername() {
+        return teacherUsername;
     }
 
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacherUsername(String teacherUsername) {
+        this.teacherUsername = teacherUsername;
     }
 
     public Integer getChecked() {
@@ -105,34 +105,13 @@ public class PaperEntity {
         this.paperUrl = paperUrl;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        PaperEntity that = (PaperEntity) o;
-//        return id == that.id &&
-//                Objects.equals(papername, that.papername) &&
-//                Objects.equals(papertype, that.papertype) &&
-//                Objects.equals(teacherId, that.teacherId) &&
-//                Objects.equals(check, that.check) &&
-//                Objects.equals(adminId, that.adminId) &&
-//                Objects.equals(creatTime, that.creatTime) &&
-//                Objects.equals(editTime, that.editTime) &&
-//                Objects.equals(paperUrl, that.paperUrl);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, papername, papertype, teacherId, check, adminId, creatTime, editTime, paperUrl);
-//    }
-
     @Override
     public String toString() {
         return "PaperEntity{" +
                 "id=" + id +
                 ", paperName='" + paperName + '\'' +
                 ", paperType=" + paperType +
-                ", teacherId=" + teacherId +
+                ", teacherUsername='" + teacherUsername + '\'' +
                 ", checked=" + checked +
                 ", adminId=" + adminId +
                 ", createTime=" + createTime +

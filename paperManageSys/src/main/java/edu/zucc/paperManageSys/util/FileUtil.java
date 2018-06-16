@@ -13,8 +13,6 @@ public class FileUtil {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     public static String BASE_PATH = "files/";
 
-
-    //在basePath下保存上传的文件夹
     public static Map<String, String> saveMultiFile(String basePath, MultipartFile[] files) {
         Map<String, String> result = new HashMap<String, String>();
         if(files == null)  {

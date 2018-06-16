@@ -72,7 +72,6 @@
             $("table").append("<tr id='"+id+"'><td><input type='checkbox' name='ck'></td><td>" + name + "</td><td><button onclick='ff(this)'>删除</button></td></tr>");
         }
         function ff(a){
-            console.log($(a).parent().parent().attr("id"));
             remove($(a).parent().parent().attr("id"));
         }
         function ckall(e){

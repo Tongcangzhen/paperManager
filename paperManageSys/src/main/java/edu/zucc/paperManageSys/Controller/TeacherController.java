@@ -17,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class TeacherController {
@@ -76,14 +74,14 @@ public class TeacherController {
         String timeFormerStr = jsonObj.getAsString("timeFormer");
         String timeLaterStr = jsonObj.getAsString("timeLater");
 
-        int teacherId=hostHolder.getUser().getId();
+        String teacherUsername=hostHolder.getUser().getUsername();
         List<ComplexPaper> paperList = null;
         if(timeFormerStr.equals("none") || timeLaterStr.equals("none"))
-            paperList = paperService.paperQueryAll(teacherId);
+            paperList = paperService.paperQueryAll(teacherUsername);
         else{
             SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
             if(jsonObj.getAsNumber("isAdmin").intValue()==0)
-                paperList = paperService.paperQueryByIdAndTime(formater.parse(timeFormerStr), formater.parse(timeLaterStr), teacherId);
+                paperList = paperService.paperQueryByIdAndTime(formater.parse(timeFormerStr), formater.parse(timeLaterStr), teacherUsername);
             else
                 paperList = paperService.paperQueryByTime(formater.parse(timeFormerStr), formater.parse(timeLaterStr));
         }

@@ -3,7 +3,6 @@ package edu.zucc.paperManageSys.Controller;
 import edu.zucc.paperManageSys.Dao.UserDao;
 import edu.zucc.paperManageSys.Entity.PaperEntity;
 import edu.zucc.paperManageSys.Service.PaperService;
-import edu.zucc.paperManageSys.Service.UserService;
 import edu.zucc.paperManageSys.util.FileUtil;
 import edu.zucc.paperManageSys.util.HostHolder;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -48,7 +47,7 @@ public class PaperController {
             String path = FileUtil.BASE_PATH + "users/" + hostHolder.getUser().getUsername()+"/papers/"+paperName;
             Map<String, String> result =  FileUtil.saveMultiFile(path, folder);
             if(result.containsKey("error")) throw new Exception(result.get("error"));
-            paperService.paperUpload(paperName,folder[0].getOriginalFilename(),Integer.parseInt(paperType), hostHolder.getUser().getId());
+            paperService.paperUpload(paperName,folder[0].getOriginalFilename(),Integer.parseInt(paperType), hostHolder.getUser().getUsername());
         }catch (Exception e){
             e.printStackTrace();
             throw new Exception("上传失败!"+e.getMessage());
@@ -63,11 +62,12 @@ public class PaperController {
         FileInputStream fis = null;
         try {
             PaperEntity paper = paperService.paperQueryById(id);
-            String path = FileUtil.BASE_PATH + "users/" + userDao.findById(paper.getTeacherId()).getUsername()+"/papers/"+paper.getPaperName()+"/"+paper.getPaperUrl();
+            String path = FileUtil.BASE_PATH + "users/" + paper.getTeacherUsername()+"/papers/"+paper.getPaperName()+"/"+paper.getPaperUrl();
 
-            File file = new File(new File(path).getAbsolutePath());
+            File file = new File(path);
             fis = new FileInputStream(file);
-            response.setHeader("Content-Disposition", "attachment; filename="+paper.getPaperUrl());
+            response.setCharacterEncoding("ISO-8859-1");
+            response.setHeader("Content-Disposition", "attachment; filename="+new String(paper.getPaperUrl().getBytes("UTF-8"), "ISO-8859-1"));
             IOUtils.copy(fis,response.getOutputStream());
             response.flushBuffer();
         }  catch (IOException e) {

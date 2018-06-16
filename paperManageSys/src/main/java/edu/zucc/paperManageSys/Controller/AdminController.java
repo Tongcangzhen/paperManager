@@ -28,6 +28,19 @@ public class AdminController {
     @Autowired
     HostHolder hostHolder;
 
+    @RequestMapping(path = "/check", method = RequestMethod.POST)
+    @ResponseBody
+    public String check(Model model,@RequestBody String data) throws Exception {
+        if (hostHolder.getUser() == null) {
+            throw new Exception("用户未登陆!");
+        }
+        JSONObject jsonObj = (JSONObject)JSONValue.parseStrict(data);
+        int id = jsonObj.getAsNumber("id").intValue();
+        int checked = jsonObj.getAsNumber("checked").intValue();
+        paperService.check(id,checked,hostHolder.getUser().getId());
+        return null;
+    }
+
     @RequestMapping(path = "/papertype", method = RequestMethod.GET)
     public String papertype(Model model) throws Exception {
         if (hostHolder.getUser() == null) {
